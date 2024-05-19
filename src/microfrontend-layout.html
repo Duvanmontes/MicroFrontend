@@ -6,21 +6,26 @@
 
   -->
 
-  <!-- Example layouts you might find helpful:
+  <style>
+    .navbar-container {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000; /* Ensure navbar is on top */
+    }
 
-  <nav>
-    <application name="@org/navbar"></application>
-  </nav>
-  <route path="settings">
-    <application name="@org/settings"></application>
-  </route>
-
-  -->
+    .dashboard-container {
+      margin-top: 60px; /* Adjust based on the navbar height */
+      z-index: 500; /* Ensure dashboard is behind the navbar */
+    }
+  </style>
 
   <main>
-    <route default>
+    <div class="navbar-container">
       <application name="@microfront/microfront-navbar"></application>
+    </div>
+    <div class="dashboard-container">
       <application name="@microfront/microfront-dashboard"></application>
-    </route>
+    </div>
   </main>
 </single-spa-router>
