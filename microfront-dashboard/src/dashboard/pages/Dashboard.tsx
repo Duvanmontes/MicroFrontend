@@ -1,25 +1,119 @@
-import { useContext } from "react";
+import React from "react";
 import SideBar from "../components/Sidebar";
-import DashboardContext from "../contexts/DashboardContext";
-import DashboardProvider from "../providers/DashboardProvider";
 import styled from "styled-components";
 
 const Dashboard: React.FC = () => {
   return (
-    <DashboardProvider>
-      <Container>
-        <SideBar />
-        <Content />
-      </Container>
-    </DashboardProvider>
+    <Container>
+      <SideBar />
+      <Content>
+        <Header>
+          <h1>Dashboard</h1>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
+            consectetur odio. Nulla facilisi. Pellentesque habitant morbi
+            tristique senect
+          </p>
+        </Header>
+        <CardContainer>
+          {[
+            {
+              title: generateRandomTitle(),
+              description: generateRandomDescription(),
+              imageUrl: "https://picsum.photos/200/300",
+            },
+            {
+              title: generateRandomTitle(),
+              description: generateRandomDescription(),
+              imageUrl: "https://picsum.photos/200/301",
+            },
+            {
+              title: generateRandomTitle(),
+              description: generateRandomDescription(),
+              imageUrl: "https://picsum.photos/200/302",
+            },
+            {
+              title: generateRandomTitle(),
+              description: generateRandomDescription(),
+              imageUrl: "https://picsum.photos/200/303",
+            },
+          ].map((card, index) => (
+            <Card
+              key={index}
+              title={card.title}
+              description={card.description}
+              imageUrl={card.imageUrl}
+            />
+          ))}
+        </CardContainer>
+      </Content>
+    </Container>
   );
 };
 
+// Generate random description for the cards
+const generateRandomDescription = () => {
+  const descriptions = [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing.",
+    "Fusce ullamcorper fringilla ipsum, eget dictum.",
+    "Pellentesque habitant morbi tristique senectus.",
+    "Sed ultrices magna vel velit varius, eu luctus risus.",
+    "Integer quis mi sed neque eleifend sagittis.",
+    "In convallis sapien eget libero pharetra, ut vehicula.",
+  ];
+  const randomIndex = Math.floor(Math.random() * descriptions.length);
+  return descriptions[randomIndex];
+};
+
+// Generate random description for the cards
+const generateRandomTitle = () => {
+  const title = [
+    "sapien eget",
+    "libero pha",
+    "Pellen tris",
+    "senectus ma",
+    "Integer sa",
+    "neque elei",
+    "risus. In c",
+    "dictum",
+    "vel velit",
+    "luctus ris",
+    "consectetur",
+    "adipiscing",
+  ];
+  const randomIndex = Math.floor(Math.random() * title.length);
+  return title[randomIndex];
+};
+
 const Container = styled.div`
-  padding-left: 250px;
-  height: calc(100vh - 80px);
-  flex: display;
-  flex-direction: row;
+  display: flex;
+  padding-top: 10px;
+  padding-left: 25px;
+  margin-left: 250px;
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+`;
+
+const Content = styled.div`
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+`;
+
+const Header = styled.div`
+  padding-bottom: 40px;
+  h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #4c51bf;
+    margin-bottom: 0;
+  }
+  p {
+    padding-top: 10px;
+    font-size: 1em;
+    color: #4c51bf;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -29,60 +123,6 @@ const CardContainer = styled.div`
   padding: 20px;
 `;
 
-const Content: React.FC = () => {
-  return (
-    <div>
-      <h1
-        style={{
-          padding: "20px",
-          fontSize: "1.8em",
-          fontWeight: "bold",
-          color: "#4c51bf",
-        }}
-      >
-        Dashboard
-      </h1>
-      <span
-        style={{
-          padding: "20px",
-          fontSize: "1em",
-          color: "#4c51bf",
-        }}
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
-        consectetur odio. Nulla facilisi. Pellentesque habitant morbi tristique
-        senect
-      </span>
-      <CardContainer>
-        {[
-          {
-            title: "Card 1",
-            description: "Description 1",
-            imageUrl: "https://picsum.photos/200/300",
-          },
-          {
-            title: "Card 2",
-            description: "Description 2",
-            imageUrl: "https://picsum.photos/200/300",
-          },
-          {
-            title: "Card 3",
-            description: "Description 3",
-            imageUrl: "https://picsum.photos/200/300",
-          },
-        ].map((card, index) => (
-          <Card
-            key={index}
-            title={card.title}
-            description={card.description}
-            imageUrl={card.imageUrl}
-          />
-        ))}
-      </CardContainer>
-    </div>
-  );
-};
-
 interface CardProps {
   title: string;
   description: string;
@@ -91,29 +131,39 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, description, imageUrl }) => {
   return (
-    <div className="max-w-sm rounded-lg overflow-hidden shadow-lg">
-      <img className="w-full" src={imageUrl} alt={title} />
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          padding: "0 20px 20px 20px",
-        }}
-      >
-        <div
-          className="text-4xl"
-          style={{
-            fontSize: "1.5em",
-            fontWeight: "bold",
-            color: "#4c51bf",
-          }}
-        >
-          {title}
-        </div>
-        <p className="text-gray-700 text-base">{description}</p>
-      </div>
-    </div>
+    <CardWrapper>
+      <img src={imageUrl} alt={title} />
+      <CardContent>
+        <h2>{title}</h2>
+        <p>{description}</p>
+      </CardContent>
+    </CardWrapper>
   );
 };
+
+const CardWrapper = styled.div`
+  max-width: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  img {
+    width: 100%;
+    height: 240px;
+  }
+`;
+
+const CardContent = styled.div`
+  padding: 16px;
+  h2 {
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+  p {
+    font-size: 1em;
+    color: #666;
+  }
+`;
 
 export default Dashboard;
